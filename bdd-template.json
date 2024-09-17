@@ -1,0 +1,375 @@
+{
+    "Enterprises": [
+        {
+            "EnterpriseNumber": "string",
+            "Status": {
+                "Code": "string",
+                "Translations": [
+                    {
+                        "Language": "string",
+                        "Description": "string"
+                    }
+                ]
+            },
+            "JuridicalSituation": {
+                "Code": "string",
+                "Translations": [
+                    {
+                        "Language": "string",
+                        "Description": "string"
+                    }
+                ]
+            },
+            "TypeOfEnterprise": {
+                "Code": "string",
+                "Translations": [
+                    {
+                        "Language": "string",
+                        "Description": "string"
+                    }
+                ]
+            },
+            "JuridicalForm": {
+                "Code": "string",
+                "Translations": [
+                    {
+                        "Language": "string",
+                        "Description": "string"
+                    }
+                ]
+            },
+            "JuridicalFormCAC": "number",
+            "StartDate": "date",
+            "establishments": [
+                {
+                    "EstablishmentNumber": "string",
+                    "StartDate": "date",
+                    "address": {
+                        "TypeOfAddress": {
+                            "Code": "string",
+                            "Translations": [
+                                {
+                                    "Language": "string",
+                                    "Description": "string"
+                                }
+                            ]
+                        },
+                        "country": {
+                            "FR": "string",
+                            "NL": "string"
+                        },
+                        "Zipcode": "string",
+                        "ville": {
+                            "FR": "string",
+                            "NL": "string"
+                        },
+                        "rue": {
+                            "FR": "string",
+                            "NL": "string"
+                        },
+                        "numero": "string",
+                        "box": "string",
+                        "complement": "string",
+                        "DateStrikingOff": "date"
+                    },
+                    "activities": [
+                        {
+                            "ActivityGroup": {
+                                "Code": "string",
+                                "Translations": [
+                                    {
+                                        "Language": "string",
+                                        "Description": "string"
+                                    }
+                                ]
+                            },
+                            "NaceVersion": "string",
+                            "Nace": {
+                                "Code": "string",
+                                "Translations": [
+                                    {
+                                        "Language": "string",
+                                        "Description": "string"
+                                    }
+                                ]
+                            },
+                            "Classification": {
+                                "Code": "string",
+                                "Translations": [
+                                    {
+                                        "Language": "string",
+                                        "Description": "string"
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "contacts": [
+                        {
+                            "EntityContact": {
+                                "Code": "string",
+                                "Translations": [
+                                    {
+                                        "Language": "string",
+                                        "Description": "string"
+                                    }
+                                ]
+                            },
+                            "ContactType": {
+                                "Code": "string",
+                                "Translations": [
+                                    {
+                                        "Language": "string",
+                                        "Description": "string"
+                                    }
+                                ]
+                            },
+                            "value": "string"
+                        }
+                    ],
+                    "denominations": [
+                        {
+                            "Language": {
+                                "Code": "string",
+                                "Translations": [
+                                    {
+                                        "Language": "string",
+                                        "Description": "string"
+                                    }
+                                ]
+                            },
+                            "TypeOfDenomination": {
+                                "Code": "string",
+                                "Translations": [
+                                    {
+                                        "Language": "string",
+                                        "Description": "string"
+                                    }
+                                ]
+                            },
+                            "value": "string"
+                        }
+                    ]
+                }
+            ],
+            "branches": [
+                {
+                    "Id": "string",
+                    "StartDate": "date",
+                    "address": {
+                        "TypeOfAddress": {
+                            "Code": "string",
+                            "Translations": [
+                                {
+                                    "Language": "string",
+                                    "Description": "string"
+                                }
+                            ]
+                        },
+                        "country": {
+                            "FR": "string",
+                            "NL": "string"
+                        },
+                        "Zipcode": "string",
+                        "ville": {
+                            "FR": "string",
+                            "NL": "string"
+                        },
+                        "rue": {
+                            "FR": "string",
+                            "NL": "string"
+                        },
+                        "numero": "string",
+                        "box": "string",
+                        "complement": "string",
+                        "DateStrikingOff": "date"
+                    },
+                    "activities": [
+                        {
+                            "ActivityGroup": {
+                                "Code": "string",
+                                "Translations": [
+                                    {
+                                        "Language": "string",
+                                        "Description": "string"
+                                    }
+                                ]
+                            },
+                            "NaceVersion": "string",
+                            "Nace": {
+                                "Code": "string",
+                                "Translations": [
+                                    {
+                                        "Language": "string",
+                                        "Description": "string"
+                                    }
+                                ]
+                            },
+                            "Classification": {
+                                "Code": "string",
+                                "Translations": [
+                                    {
+                                        "Language": "string",
+                                        "Description": "string"
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "contacts": [
+                        {
+                            "EntityContact": {
+                                "Code": "string",
+                                "Translations": [
+                                    {
+                                        "Language": "string",
+                                        "Description": "string"
+                                    }
+                                ]
+                            },
+                            "ContactType": {
+                                "Code": "string",
+                                "Translations": [
+                                    {
+                                        "Language": "string",
+                                        "Description": "string"
+                                    }
+                                ]
+                            },
+                            "value": "string"
+                        }
+                    ],
+                    "denominations": [
+                        {
+                            "Language": {
+                                "Code": "string",
+                                "Translations": [
+                                    {
+                                        "Language": "string",
+                                        "Description": "string"
+                                    }
+                                ]
+                            },
+                            "TypeOfDenomination": {
+                                "Code": "string",
+                                "Translations": [
+                                    {
+                                        "Language": "string",
+                                        "Description": "string"
+                                    }
+                                ]
+                            },
+                            "value": "string"
+                        }
+                    ]
+                }
+            ],
+            "address": {
+                "TypeOfAddress": {
+                    "Code": "string",
+                    "Translations": [
+                        {
+                            "Language": "string",
+                            "Description": "string"
+                        }
+                    ]
+                },
+                "country": {
+                    "FR": "string",
+                    "NL": "string"
+                },
+                "Zipcode": "string",
+                "ville": {
+                    "FR": "string",
+                    "NL": "string"
+                },
+                "rue": {
+                    "FR": "string",
+                    "NL": "string"
+                },
+                "numero": "string",
+                "box": "string",
+                "complement": "string",
+                "DateStrikingOff": "date"
+            },
+            "activities": [
+                {
+                    "ActivityGroup": {
+                        "Code": "string",
+                        "Translations": [
+                            {
+                                "Language": "string",
+                                "Description": "string"
+                            }
+                        ]
+                    },
+                    "NaceVersion": "string",
+                    "Nace": {
+                        "Code": "string",
+                        "Translations": [
+                            {
+                                "Language": "string",
+                                "Description": "string"
+                            }
+                        ]
+                    },
+                    "Classification": {
+                        "Code": "string",
+                        "Translations": [
+                            {
+                                "Language": "string",
+                                "Description": "string"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "contacts": [
+                {
+                    "EntityContact": {
+                        "Code": "string",
+                        "Translations": [
+                            {
+                                "Language": "string",
+                                "Description": "string"
+                            }
+                        ]
+                    },
+                    "ContactType": {
+                        "Code": "string",
+                        "Translations": [
+                            {
+                                "Language": "string",
+                                "Description": "string"
+                            }
+                        ]
+                    },
+                    "value": "string"
+                }
+            ],
+            "denominations": [
+                {
+                    "Language": {
+                        "Code": "string",
+                        "Translations": [
+                            {
+                                "Language": "string",
+                                "Description": "string"
+                            }
+                        ]
+                    },
+                    "TypeOfDenomination": {
+                        "Code": "string",
+                        "Translations": [
+                            {
+                                "Language": "string",
+                                "Description": "string"
+                            }
+                        ]
+                    },
+                    "value": "string"
+                }
+            ]
+        }
+    ]
+}
