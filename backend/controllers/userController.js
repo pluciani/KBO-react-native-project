@@ -1,21 +1,26 @@
-// Exemple de faux utilisateurs
-const users = [
-    { id: 1, name: 'John Doe' },
-    { id: 2, name: 'Jane Doe' }
-  ];
-  
-  // Obtenir tous les utilisateurs
-  const getAllUsers = (req, res) => {
+const User = require('../models/userModel');
+
+// Obtenir tous les utilisateurs
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find(); // Récupérer tous les utilisateurs dans MongoDB
     res.status(200).json(users);
-  };
-  
-  // Obtenir un utilisateur par son ID
-  const getUserById = (req, res) => {
-    const user = users.find(u => u.id === parseInt(req.params.id));
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching users', error: error.message });
+  }
+};
+
+// Obtenir un utilisateur par son ID
+const getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id); // Chercher l'utilisateur par ID
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
     res.status(200).json(user);
-  };
-  
-  module.exports = { getAllUsers, getUserById };
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching user', error: error.message });
+  }
+};
+
+module.exports = { getAllUsers, getUserById };
