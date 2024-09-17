@@ -3,16 +3,22 @@ const morgan = require('morgan');
 const cors = require('cors');
 const { errorHandler } = require('./middlewares/errorHandler');
 const userRoutes = require('./routes/userRoutes');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpecs = require('./config/swagger');
 
+// Initialisation de l'app
 const app = express();
 
 // Middlewares
-app.use(express.json()); // Pour parser les requêtes JSON
-app.use(morgan('dev')); // Logger des requêtes
-app.use(cors()); // Activer CORS
+app.use(express.json());
+app.use(morgan('dev'));
+app.use(cors());
 
 // Routes
 app.use('/api/users', userRoutes);
+
+// Documentation Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 // Middleware de gestion des erreurs
 app.use(errorHandler);
