@@ -4,12 +4,15 @@ const { getInMemoryData } = require('../memoryCache');
 const insertData = async (req, res) => {
     try {
         // Récupérer les données en mémoire
-        const inMemoryData = getInMemoryData();
+        const data = getInMemoryData("enterprise");
+        if (!data || data.length === 0) {
+            return res.status(400).json({ message: 'Aucune donnée à insérer' });
+        }
 
         // Manipuler les données en mémoire si nécessaire
-        const manipulatedData = inMemoryData.map(data => {
+        const manipulatedData = data.map(item => {
             // Exemple de manipulation : ajouter un champ timestamp
-            return { ...data, timestamp: new Date() };
+            return { ...item, timestamp: new Date() };
         });
 
         // Insérer les données manipulées dans la base de données
@@ -21,7 +24,7 @@ const insertData = async (req, res) => {
             },
         })));
 
-        res.json({ message: 'Données insérées avec succès', data: manipulatedData, inMemoryData: inMemoryData });
+        res.json({ message: 'Données insérées avec succès', data: manipulatedData, inMemoryData: data });
     } catch (error) {
         res.status(500).json({ message: 'Erreur lors de l\'insertion des données', error: error.message });
     }

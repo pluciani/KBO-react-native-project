@@ -8,6 +8,7 @@ const uploadCSV = (req, res) => {
     }
 
     const results = [];
+    const fileType = req.body.fileType;
 
     // Lire le fichier CSV et le parser
     fs.createReadStream(req.file.path)
@@ -18,8 +19,8 @@ const uploadCSV = (req, res) => {
                 // Supprimez le fichier après le parsing
                 fs.unlinkSync(req.file.path);
 
-                // Stocker les données en mémoire
-                setInMemoryData(results);
+                // Stocker les données en mémoire avec le type du fichier
+                setInMemoryData(fileType, results);
 
                 res.json({ message: 'Données parsées et stockées en mémoire', data: results });
             } catch (error) {

@@ -1,7 +1,7 @@
 const express = require('express');
 const upload = require('../middlewares/uploadMiddleware');
 const { uploadCSV } = require('../controllers/uploadController');
-const { insertData } = require('../controllers/enterpriseController');
+const { insertAllData } = require('../controllers/insertAllController');
 const router = express.Router();
 
 /**
@@ -55,13 +55,13 @@ router.post('/upload', upload.single('file'), uploadCSV);
  * @swagger
  * /insert:
  *   post:
- *     summary: Insert parsed data into the database
+ *     summary: Insert all parsed data into the database
  *     responses:
  *       200:
- *         description: Données insérées avec succès
+ *         description: Toutes les données ont été insérées avec succès
  *       500:
  *         description: Erreur lors de l'insertion des données
  */
-router.post('/insert', insertData);
+router.post('/insert', insertAllData);
 
 module.exports = router;
