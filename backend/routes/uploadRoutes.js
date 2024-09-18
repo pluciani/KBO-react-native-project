@@ -49,16 +49,10 @@ router.post('/upload', upload.single('file'), (req, res) => {
     .on('data', (data) => results.push(data))
     .on('end', async () => {
       try {
-        // Sauvegarder les données dans la base de données
-        for (const companyData of results) {
-          const newCompany = new User({
-            name: companyData.name,
-            email: companyData.email,
-            // Vous pouvez ajouter d'autres champs en fonction de votre modèle
-          });
-          await newCompany.save();
-        }
-        res.status(200).json({ message: 'Données CSV sauvegardées avec succès dans la base de données' });
+        // Supprimez le fichier après le parsing
+        fs.unlinkSync(req.file.path);
+        // Traitez les données parsées ici
+        res.json(results);
       } catch (error) {
         res.status(500).json({ message: 'Erreur lors du traitement des données', error: error.message });
       }

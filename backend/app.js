@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const { errorHandler } = require('./middlewares/errorHandler');
 const userRoutes = require('./routes/userRoutes');
+const uploadRoutes = require('./routes/uploadRoutes');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpecs = require('./config/swagger');
 const uploadRoutes = require('./routes/uploadRoutes');
