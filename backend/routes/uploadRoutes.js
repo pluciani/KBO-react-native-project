@@ -1,6 +1,7 @@
 const express = require('express');
 const upload = require('../middlewares/uploadMiddleware');
 const { uploadCSV } = require('../controllers/uploadController');
+const { insertData } = require('../controllers/enterpriseController');
 const router = express.Router();
 
 /**
@@ -49,5 +50,18 @@ const router = express.Router();
  *         description: Erreur interne du serveur lors du traitement des données CSV
  */
 router.post('/upload', upload.single('file'), uploadCSV);
+
+/**
+ * @swagger
+ * /insert:
+ *   post:
+ *     summary: Insert parsed data into the database
+ *     responses:
+ *       200:
+ *         description: Données insérées avec succès
+ *       500:
+ *         description: Erreur lors de l'insertion des données
+ */
+router.post('/insert', insertData);
 
 module.exports = router;
