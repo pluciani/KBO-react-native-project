@@ -6,6 +6,7 @@ const userRoutes = require('./routes/userRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpecs = require('./config/swagger');
+const uploadRoutes = require('./routes/uploadRoutes');
 
 // Initialisation de l'app
 const app = express();
