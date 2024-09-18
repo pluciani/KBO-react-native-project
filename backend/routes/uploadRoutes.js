@@ -3,6 +3,20 @@ const upload = require('../middlewares/uploadMiddleware');
 const { uploadCSV } = require('../controllers/uploadController');
 const router = express.Router();
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     UploadResponse:
+ *       type: object
+ *       properties:
+ *         message:
+ *           type: string
+ *           description: Message de confirmation
+ *       example:
+ *         message: Fichier CSV téléversé et traité avec succès
+ */
+
 // Téléverser et traiter le fichier CSV
 /**
  * @swagger
