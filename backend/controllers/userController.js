@@ -7,6 +7,7 @@ const getAllUsers = async (req, res) => {
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching users', error: error.message });
+    console.error(error.stack);
   }
 };
 
@@ -20,6 +21,7 @@ const getUserById = async (req, res) => {
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching user', error: error.message });
+    console.error(error.stack);
   }
 };
 

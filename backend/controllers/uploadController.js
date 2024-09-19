@@ -44,6 +44,7 @@ const uploadCSV = (req, res) => {
         })
         .catch((error) => {
             res.status(500).json({ message: 'Erreur lors du traitement des fichiers', error: error.message });
+            console.error(error.stack);
         });
 };
 

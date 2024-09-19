@@ -36,6 +36,7 @@ const insertAllData = async (req, res) => {
         res.json({ message: 'Toutes les données ont été insérées avec succès' });
     } catch (error) {
         res.status(500).json({ message: 'Erreur lors de l\'insertion des données', error: error.message });
+        console.error(error.stack);
     }
 };
 
