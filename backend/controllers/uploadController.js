@@ -2,30 +2,45 @@ const csvParser = require('csv-parser');
 const fs = require('fs');
 const { setInMemoryData } = require('../memoryCache');
 
+// Contrôleur pour l'upload de plusieurs fichiers CSV
 const uploadCSV = (req, res) => {
-    if (!req.file) {
+    if (!req.files || req.files.length === 0) {
         return res.status(400).send('Aucun fichier n\'a été téléversé');
     }
 
-    const results = [];
-    const fileType = req.body.fileType;
+    // Tableau pour stocker les résultats de tous les fichiers
+    const allResults = [];
 
-    // Lire le fichier CSV et le parser
-    fs.createReadStream(req.file.path)
-        .pipe(csvParser())
-        .on('data', (data) => results.push(data))
-        .on('end', async () => {
-            try {
-                // Supprimez le fichier après le parsing
-                fs.unlinkSync(req.file.path);
+    // Fonction pour parser un fichier CSV
+    const parseCSVFile = (file) => {
+        return new Promise((resolve, reject) => {
+            const results = [];
+            fs.createReadStream(file.path)
+                .pipe(csvParser())
+                .on('data', (data) => results.push(data))
+                .on('end', () => {
+                    // Supprimez le fichier après parsing
+                    fs.unlinkSync(file.path);
+                    resolve({ fileType: file.originalname, data: results });
+                })
+                .on('error', (error) => reject(error));
+        });
+    };
 
-                // Stocker les données en mémoire avec le type du fichier
-                setInMemoryData(fileType, results);
+    // Parse chaque fichier de manière asynchrone
+    Promise.all(req.files.map(parseCSVFile))
+        .then((parsedFiles) => {
+            // Stocker les données de chaque fichier dans la mémoire
+            parsedFiles.forEach(file => {
+                setInMemoryData(file.fileType, file.data);
+                allResults.push({ fileType: file.fileType, data: file.data });
+            });
 
-                res.json({ message: 'Données parsées et stockées en mémoire', data: results });
-            } catch (error) {
-                res.status(500).json({ message: 'Erreur lors du traitement des données', error: error.message });
-            }
+            // Répondre avec succès une fois que tous les fichiers ont été traités
+            res.json({ message: 'Tous les fichiers ont été parsés et stockés en mémoire', data: allResults });
+        })
+        .catch((error) => {
+            res.status(500).json({ message: 'Erreur lors du traitement des fichiers', error: error.message });
         });
 };
 
