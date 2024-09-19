@@ -22,36 +22,6 @@ const Code = new mongoose.Schema({
     },
 });
 
-const Establishment = new mongoose.Schema({
-    EstablishmentNumber: {
-        type: String,
-        required: true,
-    },
-    StartDate: {
-        type: Date,
-        required: true,
-    },
-    Address: {
-        type: Address,
-        required: true,
-    },
-    Activities: {
-        type: [Activity],
-        required: true,
-        default: [],
-    },
-    Contacts: {
-        type: [Contact],
-        required: true,
-        default: [],
-    },
-    Denominations: {
-        type: [Denomination],
-        required: true,
-        default: [],
-    },
-});
-
 const Address = new mongoose.Schema({
     TypeOfAddress: {
         type: Code,
@@ -87,6 +57,36 @@ const Denomination = new mongoose.Schema({
     Language: Code,
     TypeOfDenomination: Code,
     Value: String,
+});
+
+const Establishment = new mongoose.Schema({
+    EstablishmentNumber: {
+        type: String,
+        required: true,
+    },
+    StartDate: {
+        type: Date,
+        required: true,
+    },
+    Address: {
+        type: Address,
+        required: true,
+    },
+    Activities: {
+        type: [Activity],
+        required: true,
+        default: [],
+    },
+    Contacts: {
+        type: [Contact],
+        required: true,
+        default: [],
+    },
+    Denominations: {
+        type: [Denomination],
+        required: true,
+        default: [],
+    },
 });
 
 const Branch = new mongoose.Schema({
