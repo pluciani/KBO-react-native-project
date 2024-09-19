@@ -20,8 +20,6 @@ let parsedData = {
     establishment: [],
 };
 
-let finalData = [];
-
 const setInMemoryData = (type, data) => {
     if (inMemoryData[type]) {
         inMemoryData[type] = data;
@@ -62,20 +60,10 @@ const getAllParsedData = () => {
     return parsedData;
 };
 
-const setFinalData = (data) => {
-    finalData = data;
-};
-
-const getFinalData = () => {
-    return finalData;
-};
-
 module.exports = { 
     setInMemoryData, 
     getInMemoryData, 
     getAllInMemoryData, 
-    setFinalData, 
-    getFinalData, 
     setParsedData, 
     getParsedData, 
     getAllParsedData 

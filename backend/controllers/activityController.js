@@ -1,4 +1,4 @@
-const { setParsedData } = require('../memoryCache');
+const { setParsedData, getParsedData } = require('../memoryCache');
 const { getCode } = require('./codeController');
 
 const parseActivity = (data) => {
@@ -16,4 +16,10 @@ const parseActivity = (data) => {
     setParsedData("activity", manipulatedData);
 }
 
-module.exports = { parseActivity };
+const getActivities = (entityNumber) => {
+    const activities = getParsedData("activity");
+
+    return activities.filter(act => act.EntityNumber === entityNumber);
+}
+
+module.exports = { parseActivity, getActivities };
