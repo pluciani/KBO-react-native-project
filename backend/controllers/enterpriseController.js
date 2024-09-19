@@ -6,6 +6,7 @@ const { getContacts } = require('./contactController');
 const { getDenominations } = require('./denominationController');
 const { getBranches } = require('./branchController');
 const { getEstablishments } = require('./establishmentController');
+const { parseDate } = require('../dateParser');
 
 const parseEnterprise = (data) => {
 
@@ -15,7 +16,7 @@ const parseEnterprise = (data) => {
         item.JuridicalSituation = getCode("JuridicalSituation", item.JuridicalSituation);
         item.TypeOfEnterprise = getCode("TypeOfEnterprise", item.TypeOfEnterprise);
         item.JuridicalForm = getCode("JuridicalForm", item.JuridicalForm);
-        item.StartDate = new Date(item.StartDate);
+        item.StartDate = parseDate(item.StartDate);
         item.Address = getAdress(item.EnterpriseNumber);
         item.Activities = getActivities(item.EnterpriseNumber);
         item.Contacts = getContacts(item.EnterpriseNumber);

@@ -1,3 +1,4 @@
+const { parseDate } = require('../dateParser');
 const { setParsedData, getParsedData } = require('../memoryCache');
 const { getActivities } = require('./activityController');
 const { getAdress } = require('./addressController');
@@ -8,7 +9,7 @@ const parseBranch = (data) => {
 
     const manipulatedData = data.map(item => {
         
-        item.StartDate = new Date(item.StartDate);
+        item.StartDate = parseDate(item.StartDate);
         item.Address = getAdress(item.Id);
         item.Activities = getActivities(item.Id);
         item.Contacts = getContacts(item.Id);

@@ -1,3 +1,4 @@
+const { parseDate } = require('../dateParser');
 const { setParsedData, getParsedData } = require('../memoryCache');
 const { getCode } = require('./codeController');
 
@@ -6,7 +7,7 @@ const parseAddress = (data) => {
     const manipulatedData = data.map(item => {
         
         item.TypeOfAddress = getCode("TypeOfAddress", item.TypeOfAddress);
-        item.DateStrikingOff = item.DateStrikingOff ? new Date(item.DateStrikingOff) : null;
+        item.DateStrikingOff = item.DateStrikingOff ? parseDate(item.DateStrikingOff) : null;
 
         return item;
     })
