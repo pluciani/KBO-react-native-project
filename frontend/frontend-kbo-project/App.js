@@ -13,6 +13,7 @@ export default function App() {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" options={{ title: 'Accueil' }} component={HomeScreen} />
         <Stack.Screen name="UploadCSV" component={UploadScreen} />
+        <Stack.Screen name="FormInformationEntreprise" options={{ title: 'Info entreprise' }} component={FormCompanyScreen} />
         <Stack.Screen name="InformationEntreprise" options={{ title: 'Info entreprise' }} component={FormCompanyScreen} />
       </Stack.Navigator>
     </NavigationContainer>

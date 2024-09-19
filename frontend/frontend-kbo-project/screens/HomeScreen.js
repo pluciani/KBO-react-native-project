@@ -8,7 +8,7 @@ const HomeScreen = ({ navigation }) => {
         <Button
           color={'#2a7cb2'}
           title="Rechercher une entreprise"
-          onPress={() => navigation.navigate('InformationEntreprise')}
+          onPress={() => navigation.navigate('FormInformationEntreprise')}
         />
       </View>
       <View style={styles.uploadCSV}>

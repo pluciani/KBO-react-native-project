@@ -2,10 +2,11 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const { errorHandler } = require('./middlewares/errorHandler');
-const userRoutes = require('./routes/userRoutes');
+// const userRoutes = require('./routes/userRoutes');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpecs = require('./config/swagger');
 const uploadRoutes = require('./routes/uploadRoutes');
+const searchEntrepriseRoutes = require('./routes/searchEntrepriseRoutes');
 
 // Initialisation de l'app
 const app = express();
@@ -16,8 +17,9 @@ app.use(morgan('dev'));
 app.use(cors());
 
 // Routes
-app.use('/api/users', userRoutes);
+// app.use('/api/users', userRoutes);
 app.use('/api', uploadRoutes);
+app.use('/api/searchEntreprise', searchEntrepriseRoutes);
 
 // Documentation Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
