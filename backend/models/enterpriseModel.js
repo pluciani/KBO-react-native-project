@@ -56,7 +56,7 @@ const Contact = new mongoose.Schema({
 const Denomination = new mongoose.Schema({
     Language: Code,
     TypeOfDenomination: Code,
-    Value: String,
+    Denomination: String,
 });
 
 const Establishment = new mongoose.Schema({

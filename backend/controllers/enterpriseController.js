@@ -1,33 +1,33 @@
-const EnterpriseModel = require('../models/enterpriseModel');
-const { getInMemoryData } = require('../memoryCache');
+const { setParsedData } = require('../memoryCache');
+const { getCode } = require('./codeController');
+const { getActivities } = require('./activityController');
+const { getAdress } = require('./addressController');
+const { getContacts } = require('./contactController');
+const { getDenominations } = require('./denominationController');
+const { getBranches } = require('./branchController');
+const { getEstablishments } = require('./establishmentController');
+const { parseDate } = require('../dateParser');
 
-const insertData = async (req, res) => {
-    try {
-        // Récupérer les données en mémoire
-        const data = getInMemoryData("enterprise");
-        if (!data || data.length === 0) {
-            return res.status(400).json({ message: 'Aucune donnée à insérer' });
-        }
+const parseEnterprise = (data) => {
 
-        // Manipuler les données en mémoire si nécessaire
-        const manipulatedData = data.map(item => {
-            // Exemple de manipulation : ajouter un champ timestamp
-            return { ...item, timestamp: new Date() };
-        });
+    const manipulatedData = data.map(item => {
 
-        // Insérer les données manipulées dans la base de données
-        await EnterpriseModel.bulkWrite(manipulatedData.map((result) => ({
-            updateOne: {
-                filter: { EnterpriseNumber: result.EnterpriseNumber },
-                update: result,
-                upsert: true,
-            },
-        })));
+        item.Status = getCode("Status", item.Status);
+        item.JuridicalSituation = getCode("JuridicalSituation", item.JuridicalSituation);
+        item.TypeOfEnterprise = getCode("TypeOfEnterprise", item.TypeOfEnterprise);
+        item.JuridicalForm = getCode("JuridicalForm", item.JuridicalForm);
+        item.StartDate = parseDate(item.StartDate);
+        item.Address = getAdress(item.EnterpriseNumber);
+        item.Activities = getActivities(item.EnterpriseNumber);
+        item.Contacts = getContacts(item.EnterpriseNumber);
+        item.Denomination = getDenominations(item.EnterpriseNumber);
+        item.Establishments = getEstablishments(item.EnterpriseNumber);
+        item.Branches = getBranches(item.EnterpriseNumber);
 
-        res.json({ message: 'Données insérées avec succès', data: manipulatedData, inMemoryData: data });
-    } catch (error) {
-        res.status(500).json({ message: 'Erreur lors de l\'insertion des données', error: error.message });
-    }
-};
+        return item;
+    })
 
-module.exports = { insertData };
+    setParsedData("enterprise", manipulatedData);
+}
+
+module.exports = { parseEnterprise };
