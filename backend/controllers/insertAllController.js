@@ -1,21 +1,17 @@
 const EnterpriseModel = require('../models/enterpriseModel');
-// const ActivityModel = require('../models/ActivityModel');
-// const AddressModel = require('../models/AddressModel');
 const { getAllInMemoryData } = require('../memoryCache');
+
+const parseData = (data) => {
+    
+}
 
 const insertAllData = async (req, res) => {
     try {
-        const { enterprise, activity, address } = getAllInMemoryData();
+        const { activity, address, branch, code, contact, denomination, enterprise, establishment } = getAllInMemoryData();
 
         // Insérer les données dans la base de données
         if (enterprise.length > 0) {
             await EnterpriseModel.insertMany(enterprise);
-        }
-        if (activity.length > 0) {
-            await ActivityModel.insertMany(activity);
-        }
-        if (address.length > 0) {
-            await AddressModel.insertMany(address);
         }
 
         res.json({ message: 'Toutes les données ont été insérées avec succès' });
