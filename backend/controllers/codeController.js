@@ -1,4 +1,4 @@
-const { setParsedData } = require('../memoryCache');
+const { setParsedData, getParsedData } = require('../memoryCache');
 
 const parseCode = (data) => {
 
@@ -30,4 +30,10 @@ const parseCode = (data) => {
     setParsedData("code", manipulatedData);
 }
 
-module.exports = { parseCode };
+const getCode = (category, code) => {
+    const codes = getParsedData("code");
+
+    return codes.find(c => c.Category === category && c.Code === code);
+}
+
+module.exports = { parseCode, getCode };
