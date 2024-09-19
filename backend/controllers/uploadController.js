@@ -1,6 +1,7 @@
 const csvParser = require('csv-parser');
 const fs = require('fs');
 const { setInMemoryData } = require('../memoryCache');
+const { insertAllData } = require('./insertAllController');
 
 // Contrôleur pour l'upload de plusieurs fichiers CSV
 const uploadCSV = (req, res) => {
@@ -34,10 +35,12 @@ const uploadCSV = (req, res) => {
             parsedFiles.forEach(file => {
                 setInMemoryData(file.fileType, file.data);
                 allResults.push({ fileType: file.fileType, data: file.data });
-            });
+            })
+            
+            insertAllData();
 
             // Répondre avec succès une fois que tous les fichiers ont été traités
-            res.json({ message: 'Tous les fichiers ont été parsés et stockés en mémoire', data: allResults });
+            res.json({ message: 'Tous les fichiers ont été parsés et stockés en mémoire' });
         })
         .catch((error) => {
             res.status(500).json({ message: 'Erreur lors du traitement des fichiers', error: error.message });
