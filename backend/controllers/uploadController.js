@@ -22,7 +22,7 @@ const uploadCSV = (req, res) => {
                 .on('end', () => {
                     // Supprimez le fichier après parsing
                     fs.unlinkSync(file.path);
-                    resolve({ fileType: file.originalname, data: results });
+                    resolve({ fileType: file.originalname.replace(/\.[^/.]+$/, ""), data: results });
                 })
                 .on('error', (error) => reject(error));
         });
