@@ -1,6 +1,7 @@
-const { setParsedData, getParsedData } = require('../memoryCache');
+const { setParsedData, getParsedData, getInMemoryData } = require('../memoryCache');
 
-const parseCode = (data) => {
+const parseCode = async () => {
+    const data = await getInMemoryData("code");
 
     const manipulatedData = data.reduce((acc, item) => {
         // Trouver un objet existant avec la même Category et Code
@@ -27,7 +28,7 @@ const parseCode = (data) => {
         return acc;
     }, []);
 
-    setParsedData("code", manipulatedData);
+    await setParsedData("code", manipulatedData);
 }
 
 const getCode = (category, code) => {

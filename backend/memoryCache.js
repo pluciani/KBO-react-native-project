@@ -1,70 +1,64 @@
-let inMemoryData = {
-    activity: [],
-    address: [],
-    branch: [],
-    code: [],
-    contact: [],
-    denomination: [],
-    enterprise: [],
-    establishment: [],
-};
+const fs = require('fs');
+const path = require('path');
 
-let parsedData = {
-    activity: [],
-    address: [],
-    branch: [],
-    code: [],
-    contact: [],
-    denomination: [],
-    enterprise: [],
-    establishment: [],
-};
+const dataDir = path.join(__dirname, 'data');
 
-const setInMemoryData = (type, data) => {
-    if (inMemoryData[type]) {
-        inMemoryData[type] = data;
-    } else {
-        throw new Error(`Invalid file type: ${type}`);
+// Créez le répertoire de données s'il n'existe pas
+if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir);
+}
+
+const CHUNK_SIZE = 1000000; // Nombre d'éléments par morceau
+
+const setInMemoryData = async (fileType, data) => {
+    const filePath = path.join(dataDir, `${fileType}`);
+    // Supprimez les anciens fichiers de morceaux
+    fs.readdirSync(dataDir).forEach(file => {
+        if (file.startsWith(fileType)) {
+            fs.unlinkSync(path.join(dataDir, file));
+        }
+    });
+
+    // Divisez les données en morceaux et écrivez chaque morceau dans un fichier séparé
+    for (let i = 0; i < data.length; i += CHUNK_SIZE) {
+        const chunk = data.slice(i, i + CHUNK_SIZE);
+        fs.writeFileSync(`${filePath}_chunk_${i / CHUNK_SIZE}.json`, JSON.stringify(chunk));
     }
 };
 
-const getInMemoryData = (type) => {
-    if (inMemoryData[type]) {
-        return inMemoryData[type];
-    } else {
-        throw new Error(`Invalid file type: ${type}`);
-    }
+const getInMemoryData = async (fileType) => {
+    const filePath = path.join(dataDir, `${fileType}`);
+    const data = [];
+
+    let i = 0;
+    // Lire tous les fichiers de morceaux et les concaténer
+    fs.readdirSync(dataDir).forEach(file => {
+        console.log(i++);
+        if (file.startsWith(fileType)) {
+            console.log(fileType);
+            // console.trace();
+            const chunk = fs.readFileSync(path.join(dataDir, file), 'utf8');
+            console.log(chunk[0]);
+            /* TODO: Fix maximum call size error */
+            data.push(...JSON.parse(chunk));
+        }
+    });
+
+    return data;
 };
 
-const getAllInMemoryData = () => {
-    return inMemoryData;
-};
+const setParsedData = async (fileType, data) => {
+    await setInMemoryData(`p_${fileType}`, data);
+}
 
-const setParsedData = (type, data) => {
-    if (parsedData[type]) {
-        parsedData[type] = data;
-    } else {
-        throw new Error(`Invalid file type: ${type}`);
-    }
-};
+const getParsedData = async (fileType) => {
+    return getInMemoryData(`p_${fileType}`);
+}
 
-const getParsedData = (type) => {
-    if (parsedData[type]) {
-        return parsedData[type];
-    } else {
-        throw new Error(`Invalid file type: ${type}`);
-    }
-};
-
-const getAllParsedData = () => {
-    return parsedData;
-};
 
 module.exports = { 
     setInMemoryData, 
     getInMemoryData, 
-    getAllInMemoryData, 
-    setParsedData, 
-    getParsedData, 
-    getAllParsedData 
+    setParsedData,
+    getParsedData
 };

@@ -1,11 +1,12 @@
 const { parseDate } = require('../dateParser');
-const { setParsedData, getParsedData } = require('../memoryCache');
+const { setParsedData, getParsedData, getInMemoryData } = require('../memoryCache');
 const { getActivities } = require('./activityController');
 const { getAdress } = require('./addressController');
 const { getContacts } = require('./contactController');
 const { getDenominations } = require('./denominationController');
 
-const parseBranch = (data) => {
+const parseBranch = async () => {
+    const data = await getInMemoryData("branch");
 
     const manipulatedData = data.map(item => {
         
@@ -18,7 +19,7 @@ const parseBranch = (data) => {
         return item;
     })
 
-    setParsedData("branch", manipulatedData);
+    await setParsedData("branch", manipulatedData);
 }
 
 const getBranches = (enterpriseNumber) => {

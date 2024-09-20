@@ -1,4 +1,4 @@
-const { setParsedData } = require('../memoryCache');
+const { setParsedData, getInMemoryData } = require('../memoryCache');
 const { getCode } = require('./codeController');
 const { getActivities } = require('./activityController');
 const { getAdress } = require('./addressController');
@@ -8,7 +8,8 @@ const { getBranches } = require('./branchController');
 const { getEstablishments } = require('./establishmentController');
 const { parseDate } = require('../dateParser');
 
-const parseEnterprise = (data) => {
+const parseEnterprise = async () => {
+    const data = await getInMemoryData("enterprise");
 
     const manipulatedData = data.map(item => {
 
@@ -27,7 +28,7 @@ const parseEnterprise = (data) => {
         return item;
     })
 
-    setParsedData("enterprise", manipulatedData);
+    await setParsedData("enterprise", manipulatedData);
 }
 
 module.exports = { parseEnterprise };

@@ -1,7 +1,8 @@
-const { setParsedData, getParsedData } = require('../memoryCache');
+const { setParsedData, getParsedData, getInMemoryData } = require('../memoryCache');
 const { getCode } = require('./codeController');
 
-const parseActivity = (data) => {
+const parseActivity = async () => {
+    const data = await getInMemoryData("activity");
 
     const manipulatedData = data.map(item => {
         
@@ -13,7 +14,7 @@ const parseActivity = (data) => {
         return item;
     })
 
-    setParsedData("activity", manipulatedData);
+    await setParsedData("activity", manipulatedData);
 }
 
 const getActivities = (entityNumber) => {

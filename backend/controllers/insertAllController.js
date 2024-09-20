@@ -1,5 +1,5 @@
 const EnterpriseModel = require('../models/enterpriseModel');
-const { getAllInMemoryData, getParsedData } = require('../memoryCache');
+const { getInMemoryData, getParsedData } = require('../memoryCache');
 const { parseCode } = require('./codeController');
 const { parseAddress } = require('./addressController');
 const { parseActivity } = require('./activityController');
@@ -9,20 +9,21 @@ const { parseEstablishment } = require('./establishmentController');
 const { parseBranch } = require('./branchController');
 const { parseEnterprise } = require('./enterpriseController');
 
-const parseData = (data) => {
-    parseCode(data.code);
-    parseAddress(data.address);
-    parseActivity(data.activity);
-    parseContact(data.contact);
-    parseDenomination(data.denomination);
-    parseEstablishment(data.establishment);
-    parseBranch(data.branch);
-    parseEnterprise(data.enterprise);
+const parseData = async () => {
+    await parseCode();
+    await parseAddress();
+    await parseActivity();
+    await parseContact();
+    await parseDenomination();
+    await parseEstablishment();
+    await parseBranch();
+    await parseEnterprise();
 };
 
 const insertAllData = async (req, res) => {
     try {
-        parseData(getAllInMemoryData());
+        // parseData(getAllInMemoryData());
+        await parseData();
 
         enterprise = getParsedData("enterprise");
 
