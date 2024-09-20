@@ -3,7 +3,7 @@ const path = require('path');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Répertoire pour stocker les fichiers CSV
+    cb(null, 'uploads/');
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
@@ -21,4 +21,6 @@ const upload = multer({
   },
 });
 
-module.exports = upload;
+const uploadMultiple = upload.array('files', 10);
+
+module.exports = uploadMultiple;
