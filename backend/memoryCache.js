@@ -1,64 +1,119 @@
-const fs = require('fs');
-const path = require('path');
+const tmpActivityModel = require('./models/tmpActivityModel');
+const tmpAddressModel = require('./models/tmpAddressModel');
+const tmpBranchModel = require('./models/tmpBranchModel');
+const tmpCodeModel = require('./models/tmpCodeModel');
+const tmpContactModel = require('./models/tmpContactModel');
+const tmpDenominationModel = require('./models/tmpDenominationModel');
+const tmpEnterpriseModel = require('./models/tmpEnterpriseModel');
+const tmpEstablishmentModel = require('./models/tmpEstablishmentModel');
 
-const dataDir = path.join(__dirname, 'data');
-
-// Créez le répertoire de données s'il n'existe pas
-if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir);
-}
-
-const CHUNK_SIZE = 1000000; // Nombre d'éléments par morceau
+const CHUNK_SIZE = 10000; // Nombre d'éléments par morceau
 
 const setInMemoryData = async (fileType, data) => {
-    const filePath = path.join(dataDir, `${fileType}`);
-    // Supprimez les anciens fichiers de morceaux
-    fs.readdirSync(dataDir).forEach(file => {
-        if (file.startsWith(fileType)) {
-            fs.unlinkSync(path.join(dataDir, file));
-        }
-    });
 
-    // Divisez les données en morceaux et écrivez chaque morceau dans un fichier séparé
+    let model;
+
+    switch (fileType) {
+        case "activity":
+            model = tmpActivityModel;
+            break;
+        case "address":
+            model = tmpAddressModel;
+            break;
+        case "branch":
+            model = tmpBranchModel;
+            break;
+        case "code":
+            model = tmpCodeModel;
+            break;
+        case "contact":
+            model = tmpContactModel;
+            break;
+        case "denomination":
+            model = tmpDenominationModel;
+            break;
+        case "enterprise":
+            model = tmpEnterpriseModel;
+            break;
+        case "establishment":
+            model = tmpEstablishmentModel;
+            break;
+    }
+
+    // const modelName = `tmp${fileType.charAt(0).toUpperCase()}${fileType.slice(1)}Model`;
+
+    // const model = require(`./models/${modelName}`);
+
+    await model.deleteMany();
+
+    // await model.insertMany(data, { ordered: false });
+
+    // Divisez les données en morceaux et insérez chaque morceau dans la collection temporaire
     for (let i = 0; i < data.length; i += CHUNK_SIZE) {
         const chunk = data.slice(i, i + CHUNK_SIZE);
-        fs.writeFileSync(`${filePath}_chunk_${i / CHUNK_SIZE}.json`, JSON.stringify(chunk));
+        await model.insertMany(chunk, { ordered: false });
+
+        // const tmpData = new model({ data: chunk });
+        // await tmpData.save();
     }
 };
 
 const getInMemoryData = async (fileType) => {
-    const filePath = path.join(dataDir, `${fileType}`);
-    const data = [];
+    // const tempDataChunks = await TempDataModel.find({ fileType });
+    // const data = tempDataChunks.reduce((acc, chunk) => acc.concat(chunk.data), []);
+    // return data;
 
-    let i = 0;
-    // Lire tous les fichiers de morceaux et les concaténer
-    fs.readdirSync(dataDir).forEach(file => {
-        console.log(i++);
-        if (file.startsWith(fileType)) {
-            console.log(fileType);
-            // console.trace();
-            const chunk = fs.readFileSync(path.join(dataDir, file), 'utf8');
-            console.log(chunk[0]);
-            /* TODO: Fix maximum call size error */
-            data.push(...JSON.parse(chunk));
-        }
-    });
+    let model;
 
-    return data;
+    switch (fileType) {
+        case "activity":
+            model = tmpActivityModel;
+            break;
+        case "address":
+            model = tmpAddressModel;
+            break;
+        case "branch":
+            model = tmpBranchModel;
+            break;
+        case "code":
+            model = tmpCodeModel;
+            break;
+        case "contact":
+            model = tmpContactModel;
+            break;
+        case "denomination":
+            model = tmpDenominationModel;
+            break;
+        case "enterprise":
+            model = tmpEnterpriseModel;
+            break;
+        case "establishment":
+            model = tmpEstablishmentModel;
+            break;
+    }
+
+    // const modelName = `tmp${fileType.charAt(0).toUpperCase()}${fileType.slice(1)}Model`;
+
+    // const model = require(`./models/${modelName}`);
+
+    // const tempDataChunks = await model.find();
+    // const data = tempDataChunks.reduce((acc, chunk) => acc.concat(chunk.data), []);
+    // return data;
+
+    return model.find();
 };
 
-const setParsedData = async (fileType, data) => {
-    await setInMemoryData(`p_${fileType}`, data);
-}
+// const setParsedData = async (fileType, data) => {
+//     await setInMemoryData(`p_${fileType}`, data);
+// };
 
-const getParsedData = async (fileType) => {
-    return getInMemoryData(`p_${fileType}`);
-}
-
+// const getParsedData = async (fileType) => {
+//     return getInMemoryData(`p_${fileType}`);
+// };
 
 module.exports = { 
     setInMemoryData, 
     getInMemoryData, 
-    setParsedData,
-    getParsedData
+    // setParsedData,
+    // getParsedData
 };

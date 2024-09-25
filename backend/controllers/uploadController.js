@@ -5,6 +5,8 @@ const { insertAllData } = require('./insertAllController');
 
 // Contrôleur pour l'upload de plusieurs fichiers CSV
 const uploadCSV = (req, res) => {
+    console.log('Uploading CSV files...');
+    console.time('Uploading CSV files');
     if (!req.files || req.files.length === 0) {
         return res.status(400).send('Aucun fichier n\'a été téléversé');
     }
@@ -18,13 +20,15 @@ const uploadCSV = (req, res) => {
             fs.createReadStream(file.path)
                 .pipe(csvParser())
                 .on('data', (data) => results.push(data))
-                .on('end', () => {
+                .on('end', async () => {
                     console.timeEnd(file.originalname);
 
                     // Supprimez le fichier après parsing
                     fs.unlinkSync(file.path);
 
-                    setInMemoryData(file.originalname.replace(/\.[^/.]+$/, ""), results);
+                    console.time('Set in-memory data ' + file.originalname);
+                    await setInMemoryData(file.originalname.replace(/\.[^/.]+$/, ""), results);
+                    console.timeEnd('Set in-memory data ' + file.originalname);
 
                     resolve({ message: 'Fichier ' + file.originalname + ' téléversé et traité avec succès' })
                 })
@@ -35,9 +39,12 @@ const uploadCSV = (req, res) => {
     // Parse chaque fichier de manière asynchrone
     Promise.all(req.files.map(parseCSVFile))
         .then((parsedFiles) => {
+            console.timeEnd('Uploading CSV files');
 
             // Insérer toutes les données en mémoire dans la base de données
+            // console.time('Inserting all data');
             insertAllData(req, res);
+            // console.timeEnd('Inserting all data');
             
             // res.status(200).json({ message: 'Fichiers CSV téléversés et traités avec succès' });
         })
