@@ -1,5 +1,3 @@
-const EnterpriseModel = require('../models/enterpriseModel');
-const { getAllInMemoryData, getParsedData } = require('../memoryCache');
 const { parseCode } = require('./codeController');
 const { parseAddress } = require('./addressController');
 const { parseActivity } = require('./activityController');
@@ -9,33 +7,31 @@ const { parseEstablishment } = require('./establishmentController');
 const { parseBranch } = require('./branchController');
 const { parseEnterprise } = require('./enterpriseController');
 
-const parseData = (data) => {
-    parseCode(data.code);
-    parseAddress(data.address);
-    parseActivity(data.activity);
-    parseContact(data.contact);
-    parseDenomination(data.denomination);
-    parseEstablishment(data.establishment);
-    parseBranch(data.branch);
-    parseEnterprise(data.enterprise);
+const parseData = async () => {
+    console.log(new Date() + ' : Parsing all data...');
+    await parseCode();
+    await parseAddress();
+    await parseActivity();
+    await parseContact();
+    await parseDenomination();
+    await parseEstablishment();
+    await parseBranch();
+    await parseEnterprise();
 };
 
 const insertAllData = async (req, res) => {
+    console.log(new Date() + ' : Inserting all data...');
+    console.time('Inserting all data...');
     try {
-        parseData(getAllInMemoryData());
+        await parseData();
 
-        enterprise = getParsedData("enterprise");
-
-        // Insérer les données dans la base de données
-        if (enterprise.length > 0) {
-            await EnterpriseModel.insertMany(enterprise);
-        } else {
-            throw new Error('Aucune donnée à insérer');
-        }
+        console.timeEnd('Inserting all data...');
+        console.log(new Date() + ' : Toutes les données ont été insérées avec succès');
 
         res.json({ message: 'Toutes les données ont été insérées avec succès' });
     } catch (error) {
         res.status(500).json({ message: 'Erreur lors de l\'insertion des données', error: error.message });
+        console.error(error.stack);
     }
 };
 

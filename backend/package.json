@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --max-old-space-size=12288 server.js",
+    "startDev": "nodemon --max-old-space-size=12288 --ignore data/ --ignore uploads/ server.js"
   },
   "keywords": [],
   "author": "",

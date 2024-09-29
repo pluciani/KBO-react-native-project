@@ -1,24 +1,57 @@
 const { parseDate } = require('../dateParser');
-const { setParsedData, getParsedData } = require('../memoryCache');
 const { getCode } = require('./codeController');
+const parsedAddressModel = require('../models/parsedAddressModel');
+const tmpAddressModel = require('../models/tmpAddressModel');
 
-const parseAddress = (data) => {
+const parseAddress = async () => {
+    console.log("Parsing address data");
+    console.time("Parsing address data");
+    const BATCH_SIZE = 10000; // Définissez la taille du lot
+    let skip = 0;
+    let hasMoreDocuments = true;
 
-    const manipulatedData = data.map(item => {
-        
-        item.TypeOfAddress = getCode("TypeOfAddress", item.TypeOfAddress);
-        item.DateStrikingOff = item.DateStrikingOff ? parseDate(item.DateStrikingOff) : null;
+    await parsedAddressModel.deleteMany({});
 
-        return item;
-    })
+    while (hasMoreDocuments) {
+        // Récupérer un lot de documents de la collection source
+        const data = await tmpAddressModel.find().skip(skip).limit(BATCH_SIZE);
 
-    setParsedData("address", manipulatedData);
+        if (data.length === 0) {
+            hasMoreDocuments = false;
+            break;
+        }
+
+        // Parser les documents
+        const manipulatedData = await Promise.all(data.map(async (item) => {
+            const parsedItem = {
+                EntityNumber: item.EntityNumber,
+                CountryNL: item.CountryNL,
+                CountryFR: item.CountryFR,
+                Zipcode: item.Zipcode,
+                MunicipalityNL: item.MunicipalityNL,
+                MunicipalityFR: item.MunicipalityFR,
+                StreetNL: item.StreetNL,
+                StreetFR: item.StreetFR,
+                HouseNumber: item.HouseNumber,
+                Box: item.Box,
+                ExtraAddressInfo: item.ExtraAddressInfo,
+            };
+            const typeOfAddress = await getCode("TypeOfAddress", item.TypeOfAddress)
+            parsedItem.TypeOfAddress = typeOfAddress;
+
+            parsedItem.DateStrikingOff = item.DateStrikingOff ? parseDate(item.DateStrikingOff) : null;
+
+            return parsedItem;
+        }));
+
+        // Insérer les données manipulées dans la collection cible
+        await parsedAddressModel.insertMany(manipulatedData);
+
+        skip += BATCH_SIZE;
+    }
+
+    console.timeEnd("Parsing address data");
+
 }
 
-const getAdress = (entityNumber) => {
-    const addresses = getParsedData("address");
-
-    return addresses.find(adr => adr.EntityNumber === entityNumber);
-}
-
-module.exports = { parseAddress, getAdress };
+module.exports = { parseAddress };

@@ -59,7 +59,7 @@ const Denomination = new mongoose.Schema({
     Denomination: String,
 });
 
-const Establishment = new mongoose.Schema({
+const parsedEstablishmentSchema = new mongoose.Schema({
     EstablishmentNumber: {
         type: String,
         required: true,
@@ -68,96 +68,13 @@ const Establishment = new mongoose.Schema({
         type: Date,
         required: true,
     },
-    Address: {
-        type: Address,
-        required: true,
-    },
-    Activities: {
-        type: [Activity],
-        required: true,
-        default: [],
-    },
-    Contacts: {
-        type: [Contact],
-        required: true,
-        default: [],
-    },
-    Denominations: {
-        type: [Denomination],
-        required: true,
-        default: [],
-    },
-});
-
-const Branch = new mongoose.Schema({
-    Id: {
-        type: String,
-        required: true,
-    },
-    StartDate: {
-        type: Date,
-        required: true,
-    },
-    Address: {
-        type: Address,
-        required: true,
-    },
-    Activities: {
-        type: [Activity],
-        required: true,
-        default: [],
-    },
-    Contacts: {
-        type: [Contact],
-        required: true,
-        default: [],
-    },
-    Denominations: {
-        type: [Denomination],
-        required: true,
-        default: [],
-    },
-});
-
-const enterpriseSchema = new mongoose.Schema({
     EnterpriseNumber: {
         type: String,
         required: true,
     },
-    Status: {
-        type: Code,
-        required: true,
-    },
-    JuridicalSituation: {
-        type: Code,
-        required: true,
-    },
-    TypeOfEnterprise: {
-        type: Code,
-        required: true,
-    },
-    JuridicalForm: {
-        type: Code,
-    },
-    JuridicalFormCAC: {
-        type: String,
-    },
-    StartDate: {
-        type: Date,
-        required: true,
-    },
-    Establishments: {
-        type: [Establishment],
-        required: true,
-        default: [],
-    },
-    Branches: {
-        type: [Branch],
-        required: true,
-        default: [],
-    },
     Address: {
         type: Address,
+        required: true,
     },
     Activities: {
         type: [Activity],
@@ -176,6 +93,6 @@ const enterpriseSchema = new mongoose.Schema({
     },
 });
 
-const EnterpriseModel = mongoose.model('Enterprise', enterpriseSchema);
+const parsedEstablishmentModel = mongoose.model('ParsedEstablishment', parsedEstablishmentSchema);
 
-module.exports = EnterpriseModel;
+module.exports = parsedEstablishmentModel;

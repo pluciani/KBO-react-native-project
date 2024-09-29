@@ -1,70 +1,54 @@
-let inMemoryData = {
-    activity: [],
-    address: [],
-    branch: [],
-    code: [],
-    contact: [],
-    denomination: [],
-    enterprise: [],
-    establishment: [],
-};
+const tmpActivityModel = require('./models/tmpActivityModel');
+const tmpAddressModel = require('./models/tmpAddressModel');
+const tmpBranchModel = require('./models/tmpBranchModel');
+const tmpCodeModel = require('./models/tmpCodeModel');
+const tmpContactModel = require('./models/tmpContactModel');
+const tmpDenominationModel = require('./models/tmpDenominationModel');
+const tmpEnterpriseModel = require('./models/tmpEnterpriseModel');
+const tmpEstablishmentModel = require('./models/tmpEstablishmentModel');
 
-let parsedData = {
-    activity: [],
-    address: [],
-    branch: [],
-    code: [],
-    contact: [],
-    denomination: [],
-    enterprise: [],
-    establishment: [],
-};
+const CHUNK_SIZE = 10000; // Nombre d'éléments par morceau
 
-const setInMemoryData = (type, data) => {
-    if (inMemoryData[type]) {
-        inMemoryData[type] = data;
-    } else {
-        throw new Error(`Invalid file type: ${type}`);
+const setInMemoryData = async (fileType, data) => {
+
+    let model;
+
+    switch (fileType) {
+        case "activity":
+            model = tmpActivityModel;
+            break;
+        case "address":
+            model = tmpAddressModel;
+            break;
+        case "branch":
+            model = tmpBranchModel;
+            break;
+        case "code":
+            model = tmpCodeModel;
+            break;
+        case "contact":
+            model = tmpContactModel;
+            break;
+        case "denomination":
+            model = tmpDenominationModel;
+            break;
+        case "enterprise":
+            model = tmpEnterpriseModel;
+            break;
+        case "establishment":
+            model = tmpEstablishmentModel;
+            break;
     }
-};
 
-const getInMemoryData = (type) => {
-    if (inMemoryData[type]) {
-        return inMemoryData[type];
-    } else {
-        throw new Error(`Invalid file type: ${type}`);
+    await model.deleteMany();
+
+    // Divisez les données en morceaux et insérez chaque morceau dans la collection temporaire
+    for (let i = 0; i < data.length; i += CHUNK_SIZE) {
+        const chunk = data.slice(i, i + CHUNK_SIZE);
+        await model.insertMany(chunk, { ordered: false });
     }
-};
-
-const getAllInMemoryData = () => {
-    return inMemoryData;
-};
-
-const setParsedData = (type, data) => {
-    if (parsedData[type]) {
-        parsedData[type] = data;
-    } else {
-        throw new Error(`Invalid file type: ${type}`);
-    }
-};
-
-const getParsedData = (type) => {
-    if (parsedData[type]) {
-        return parsedData[type];
-    } else {
-        throw new Error(`Invalid file type: ${type}`);
-    }
-};
-
-const getAllParsedData = () => {
-    return parsedData;
 };
 
 module.exports = { 
     setInMemoryData, 
-    getInMemoryData, 
-    getAllInMemoryData, 
-    setParsedData, 
-    getParsedData, 
-    getAllParsedData 
 };
