@@ -1,28 +1,21 @@
-// const { setParsedData, getParsedData, getInMemoryData } = require('../memoryCache');
-// const { getCode } = require('./codeController');
 const tmpActivityModel = require('../models/tmpActivityModel');
-// const parsedActivityModel = require('../models/parsedActivityModel');
 const parsedEnterpriseActivityModel = require('../models/parsedEnterpriseActivityModel');
 const parsedEstablishmentActivityModel = require('../models/parsedEstablishmentActivityModel');
 const parsedBranchActivityModel = require('../models/parsedBranchActivityModel');
 
 const parseActivity = async () => {
-    console.log("Parsing activity data");
+    console.log(new Date() + " : Parsing activity data");
     console.time("Parsing activity data");
-    // const data = await getInMemoryData("activity");
     const BATCH_SIZE = 1000; // Définissez la taille du lot
-    let skip = 0;
+    let skip = 3807000;
     let hasMoreDocuments = true;
 
     // Supprimer les documents existants dans les collections cibles
-    // await parsedActivityModel.deleteMany({});
     await parsedEnterpriseActivityModel.deleteMany({});
     await parsedEstablishmentActivityModel.deleteMany({});
     await parsedBranchActivityModel.deleteMany({});
 
     while (hasMoreDocuments) {
-        // Récupérer un lot de documents de la collection source
-        // const data = await tmpActivityModel.find().skip(skip).limit(BATCH_SIZE);
 
         // Utiliser un pipeline d'agrégation pour récupérer et manipuler les données
         const data = await tmpActivityModel.aggregate([
@@ -104,14 +97,9 @@ const parseActivity = async () => {
                 Classification: item.Classification
             };
             
-            // parsedItem.ActivityGroup = await getCode("ActivityGroup", item.ActivityGroup);
-            // parsedItem.Nace = await getCode("Nace" + item.NaceVersion, item.NaceCode);
-            // // delete item.NaceCode;
-            // parsedItem.Classification = await getCode("Classification", item.Classification);
-
-            // return parsedItem;
             switch (item.EntityNumber[0]) {
                 case "0": // Enterprise
+                case "1": // Enterprise
                     activitiesEnterprise.push(parsedItem);
                     break;
                 case "2": // Establishment
@@ -126,7 +114,6 @@ const parseActivity = async () => {
         });
 
         // Insérer les données manipulées dans la collection cible
-        // await parsedActivityModel.insertMany(manipulatedData);
         await parsedEnterpriseActivityModel.insertMany(activitiesEnterprise);
         await parsedEstablishmentActivityModel.insertMany(activitiesEstablishment);
         await parsedBranchActivityModel.insertMany(activitiesBranch);
@@ -135,15 +122,8 @@ const parseActivity = async () => {
     }
 
     console.timeEnd("Parsing activity data");
+    console.log(new Date() + " : Done parsing activity data");
 
-    // await setParsedData("activity", manipulatedData);
 }
-
-// const getActivities = async (entityNumber) => {
-//     // const activities = await getParsedData("activity");
-
-//     // return activities.filter(act => act.EntityNumber === entityNumber);
-//     return parsedActivityModel.find({ EntityNumber: entityNumber });
-// }
 
 module.exports = { parseActivity };

@@ -42,9 +42,7 @@ const uploadCSV = (req, res) => {
             console.timeEnd('Uploading CSV files');
 
             // Insérer toutes les données en mémoire dans la base de données
-            // console.time('Inserting all data');
             insertAllData(req, res);
-            // console.timeEnd('Inserting all data');
             
             // res.status(200).json({ message: 'Fichiers CSV téléversés et traités avec succès' });
         })

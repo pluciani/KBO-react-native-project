@@ -1,4 +1,3 @@
-// const { setParsedData, getParsedData, getInMemoryData } = require('../memoryCache');
 const { getCode } = require('./codeController');
 const parsedContactModel = require('../models/parsedContactModel');
 const tmpContactModel = require('../models/tmpContactModel');
@@ -6,7 +5,6 @@ const tmpContactModel = require('../models/tmpContactModel');
 const parseContact = async () => {
     console.log("Parsing contact data");
     console.time("Parsing contact data");
-    // const data = await getInMemoryData("contact");
     const BATCH_SIZE = 10000; // Définissez la taille du lot
     let skip = 0;
     let hasMoreDocuments = true;
@@ -42,14 +40,6 @@ const parseContact = async () => {
 
     console.timeEnd("Parsing contact data");
 
-    // await setParsedData("contact", manipulatedData);
 }
 
-const getContacts = async (entityNumber) => {
-    // const contacts = await getParsedData("contact");
-
-    // return contacts.filter(c => c.EntityNumber === entityNumber);
-    return parsedContactModel.find({ EntityNumber: entityNumber });
-}
-
-module.exports = { parseContact, getContacts };
+module.exports = { parseContact };

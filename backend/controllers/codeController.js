@@ -1,11 +1,9 @@
-// const { setParsedData, getParsedData, getInMemoryData } = require('../memoryCache');
 const tmpCodeModel = require('../models/tmpCodeModel');
 const parsedCodeModel = require('../models/parsedCodeModel');
 
 const parseCode = async () => {
     console.log("Parsing code data");
     console.time("Parsing code data");
-    // const data = await getInMemoryData("code");
     const BATCH_SIZE = 10000; // Définissez la taille du lot
     let skip = 0;
     let hasMoreDocuments = true;
@@ -55,13 +53,9 @@ const parseCode = async () => {
 
     console.timeEnd("Parsing code data");
 
-    // await setParsedData("code", manipulatedData);
 }
 
 const getCode = async (category, code) => {
-    // const codes = await getParsedData("code");
-
-    // return codes.find(c => c.Category === category && c.Code === code);
     return await parsedCodeModel.findOne({
         Category: category,
         Code: code

@@ -3,9 +3,9 @@ const tmpEstablishmentModel = require('../models/tmpEstablishmentModel');
 const parsedEstablishmentModel = require('../models/parsedEstablishmentModel');
 
 const parseEstablishment = async () => {
-    console.log("Parsing establishment data...");
+    console.log(new Date() + " : Parsing establishment data...");
     console.time("Parsing establishment data");
-    const BATCH_SIZE = 1000; // Définissez la taille du lot
+    const BATCH_SIZE = 100; // Définissez la taille du lot
     let skip = 0;
     let hasMoreDocuments = true;
 
@@ -60,10 +60,8 @@ const parseEstablishment = async () => {
                 }
             }
         ])
-        // console.log('data[0]', data[0]);
 
         if (data.length === 0) {
-            // console.log("No more documents");
             hasMoreDocuments = false;
             break;
         }
@@ -80,16 +78,14 @@ const parseEstablishment = async () => {
             };
         });
         
-        // console.log('manipulatedData[0]', manipulatedData[0]);
-
         // Insérer les données manipulées dans la collection cible
         await parsedEstablishmentModel.insertMany(manipulatedData);
 
         skip += BATCH_SIZE;
-        // console.log('skip', skip);
     }
 
     console.timeEnd("Parsing establishment data");
+    console.log(new Date() + " : Establishment data parsed");
 
 }
 

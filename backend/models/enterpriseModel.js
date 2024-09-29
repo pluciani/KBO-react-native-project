@@ -158,7 +158,6 @@ const enterpriseSchema = new mongoose.Schema({
     },
     Address: {
         type: Address,
-        required: true,
     },
     Activities: {
         type: [Activity],

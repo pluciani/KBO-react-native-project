@@ -66,15 +66,12 @@ const parsedBranchSchema = new mongoose.Schema({
     },
     StartDate: {
         type: Date,
-        required: true,
     },
     EnterpriseNumber: {
         type: String,
-        required: true,
     },
     Address: {
         type: Address,
-        required: true,
     },
     Activities: {
         type: [Activity],

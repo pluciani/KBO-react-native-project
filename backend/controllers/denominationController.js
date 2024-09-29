@@ -1,4 +1,3 @@
-// const { setParsedData, getParsedData, getInMemoryData } = require('../memoryCache');
 const { getCode } = require('./codeController');
 const tmpDenominationModel = require('../models/tmpDenominationModel');
 const parsedDenominationModel = require('../models/parsedDenominationModel');
@@ -6,7 +5,6 @@ const parsedDenominationModel = require('../models/parsedDenominationModel');
 const parseDenomination = async () => {
     console.log("Parsing denomination data");
     console.time("Parsing denomination data");
-    // const data = await getInMemoryData("denomination");
     const BATCH_SIZE = 10000; // Définissez la taille du lot
     let skip = 0;
     let hasMoreDocuments = true;
@@ -42,14 +40,6 @@ const parseDenomination = async () => {
 
     console.timeEnd("Parsing denomination data");
 
-    // await setParsedData("denomination", manipulatedData);
 }
 
-const getDenominations = async (entityNumber) => {
-    // const denominations = await getParsedData("denomination");
-
-    // return denominations.filter(d => d.EntityNumber === entityNumber);
-    return parsedDenominationModel.find({ EntityNumber: entityNumber });
-}
-
-module.exports = { parseDenomination, getDenominations };
+module.exports = { parseDenomination };

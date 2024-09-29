@@ -1,28 +1,17 @@
-// const { setParsedData, getInMemoryData } = require('../memoryCache');
-// const { getCode } = require('./codeController');
-// const { getActivities } = require('./activityController');
-// const { getAdress } = require('./addressController');
-// const { getContacts } = require('./contactController');
-// const { getDenominations } = require('./denominationController');
-// const { getBranches } = require('./branchController');
-// const { getEstablishments } = require('./establishmentController');
 const { parseDate } = require('../dateParser');
 const tmpEnterpriseModel = require('../models/tmpEnterpriseModel');
 const EnterpriseModel = require('../models/enterpriseModel');
 
 const parseEnterprise = async () => {
-    console.log("Parsing enterprise data...");
+    console.log(new Date() + " : Parsing enterprise data...");
     console.time("Parsing enterprise data");
-    // const data = await getInMemoryData("enterprise");
-    const BATCH_SIZE = 10000; // Définissez la taille du lot
+    const BATCH_SIZE = 100; // Définissez la taille du lot
     let skip = 0;
     let hasMoreDocuments = true;
 
     await EnterpriseModel.deleteMany({});
 
     while (hasMoreDocuments) {
-        // Récupérer un lot de documents de la collection source
-        // const data = await tmpEnterpriseModel.find().skip(skip).limit(BATCH_SIZE);
 
         // Utiliser un pipeline d'agrégation pour récupérer et manipuler les données
         const data = await tmpEnterpriseModel.aggregate([
@@ -161,24 +150,6 @@ const parseEnterprise = async () => {
         }
 
         const manipulatedData = data.map(item => {
-            // const parsedItem = {
-            //     EnterpriseNumber: item.EnterpriseNumber,
-            //     JuridicalFormCAC: item.JuridicalFormCAC,
-            // }
-
-            // parsedItem.Status = await getCode("Status", item.Status);
-            // parsedItem.JuridicalSituation = await getCode("JuridicalSituation", item.JuridicalSituation);
-            // parsedItem.TypeOfEnterprise = await getCode("TypeOfEnterprise", item.TypeOfEnterprise);
-            // parsedItem.JuridicalForm = await getCode("JuridicalForm", item.JuridicalForm);
-            // parsedItem.StartDate = parseDate(item.StartDate);
-            // parsedItem.Address = await getAdress(item.EnterpriseNumber);
-            // parsedItem.Activities = await getActivities(item.EnterpriseNumber);
-            // parsedItem.Contacts = await getContacts(item.EnterpriseNumber);
-            // parsedItem.Denomination = await getDenominations(item.EnterpriseNumber);
-            // parsedItem.Establishments = await getEstablishments(item.EnterpriseNumber);
-            // parsedItem.Branches = await getBranches(item.EnterpriseNumber);
-
-            // return parsedItem;
             return {
                 EnterpriseNumber: item.EnterpriseNumber,
                 JuridicalFormCAC: item.JuridicalFormCAC,
@@ -203,8 +174,8 @@ const parseEnterprise = async () => {
     }
 
     console.timeEnd("Parsing enterprise data");
+    console.log(new Date() + " : Enterprise data parsing completed.");
 
-    // await setParsedData("enterprise", manipulatedData);
 }
 
 module.exports = { parseEnterprise };
